@@ -49,8 +49,8 @@ pipeline {
                 container('maven') {
                     sh 'mvn clean package -DskipTests'
                     sh 'docker build -f Dockerfile-online -t $REGISTRY/$HARBOR_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER .'
-                    withCredentials([usernamePassword(passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME', credentialsId: "$HARBOR_CREDENTIAL_ID",)]) {
-                        sh 'echo "$DOCKER_PASSWORD" | docker login $REGISTRY -u "$DOCKER_USERNAME" --password-stdin'
+                    withCredentials([usernamePassword(passwordVariable: 'HARBOR_PASSWORD', usernameVariable: 'HARBOR_USERNAME', credentialsId: "$HARBOR_CREDENTIAL_ID",)]) {
+                        sh 'echo "$HARBOR_PASSWORD" | docker login $REGISTRY -u "$HARBOR_USERNAME" --password-stdin'
                         sh 'docker push $REGISTRY/$HARBOR_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER'
                     }
                 }
@@ -99,8 +99,8 @@ pipeline {
                 container('maven') {
                     input(id: 'release-image-with-tag', message: 'release image with tag?')
                     withCredentials([usernamePassword(credentialsId: "$GITHUB_CREDENTIAL_ID", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-                        sh 'git config --global user.email "kubesphere@yunify.com" '
-                        sh 'git config --global user.name "kubesphere" '
+                        sh 'git config --global user.email "964148400@qq.com" '
+                        sh 'git config --global user.name "yuyufeifei" '
                         sh 'git tag -a $TAG_NAME -m "$TAG_NAME" '
                         sh 'git push http://$GIT_USERNAME:$GIT_PASSWORD@github.com/$GITHUB_ACCOUNT/devops-maven-sample.git --tags --ipv4'
                     }
